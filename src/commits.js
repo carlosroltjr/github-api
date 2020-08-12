@@ -1,15 +1,15 @@
 const axios = require('axios')
 
-const user = 'carlosroltjr'
+const user = 'Marzeu'
 let count = 0
 
-axios.get(`https://api.github.com/users/${user}/repos`)
-    .then(response => {
-        response.data.forEach(element => {
-            axios.get(`https://api.github.com/repos/${user}/${element.name}/commits`)
-                .then(response => {
-                    count += response.data.length
-                    console.log(count)
-                })
-        })
-    })
+async function getCommitsCount() {
+    let response = await axios.get(`https://api.github.com/users/${user}/repos`)
+    for (element of response.data) {
+        let commitResponse = await axios.get(`https://api.github.com/repos/${user}/${element.name}/commits`)
+        count += commitResponse.data.length
+    }
+    console.log(count)
+}
+
+getCommitsCount()
